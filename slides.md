@@ -187,3 +187,46 @@ Micro-Frontends is new, and frameworks are evolving. There are several framework
 <p></p>
 
 [3. Micro Frontends Using Single-SPA and Module Federation](https://betterprogramming.pub/micro-frontends-using-single-spa-and-module-federation-81ec27d03aee)
+
+---
+
+# Next.js Multi Zones
+
+https://nextjs.org/docs/advanced-features/multi-zones
+
+- A zone is a single deployment of a Next.js app. You can have multiple zones and merge them as a single app.
+- For example, let's say you have the following apps:
+  - An app for serving `/blog/**`
+  - Another app for serving all other pages
+- With multi zones support, you can merge both these apps into a single one allowing your customers to browse it using a single URL, but you can develop and deploy both apps independently.
+- Can be used in conjunction with micro-frontend
+
+---
+
+# Multi Zone pros
+
+- Faster than micro-frontend
+  - Next.js will preload your apps in the background to make them load faster.
+  - Preloaded app will load just like they are in the same app with host app, users will feel like they are using a single app.
+  - Since both apps are make with Next.js, they share runtime modules.
+- Both apps can be deployed independently.
+- We can use micro-frontend to share the `shell` between apps.
+- Simpler config than microfrontend meaning easier to maintain, more stable.
+- Doesn't need to worry about caching compared to Micro-frontend.
+
+---
+
+# Multi Zone cons
+
+- Boths app must be developed with Next.js
+
+---
+
+# Proposed development strategy
+
+- Create private npm repositories to share commonly used packages (components,...) between apps, this can help us maintain them separately.
+- Use single-spa as a router for mf and use module federation to load and share Domain modules.
+- Expose the `shell` (Layouts,Navbar,...) from the Main App with Module-Federation.
+- Develop other Domain apps:
+  - If we can make them as pages (Booking page, Inbound page,Outbound page,...) (Recommended) then make them Multi Zone apps and config Main App to load.
+  - If they are only components then use single-spa and Module Federation to load them.
